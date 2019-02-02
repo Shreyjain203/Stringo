@@ -139,22 +139,25 @@ public class MainActivity extends AppCompatActivity {
 
         speaker = speaker.replaceAll("Shashwat", "Maadarchaood");
         speaker = speaker.replaceAll("Shrey", "My inventor");
-        speaker = speaker.replaceAll("Hello", "fuck off");
         speaker = speaker.replaceAll("Hi", "et tu brutus, fuck off");
         speaker = speaker.replaceAll("College", "school");
+        speaker = speaker.replaceAll("Rashmi", "jaan hai meri, red heart");
         speaker = speaker.replaceAll("Sex", "you are virgin");
-        speaker = speaker.replaceAll("Sing A Song", "which one . . . . . . aunty ya rinkiya");
         speaker = speaker.replaceAll("Rinkiya", "hee hee hee hee hus daelae rinkiya k papa");
-        speaker = speaker.replaceAll("Srishti", "joe dentist hai par ap nay aaap ko doctor bowlti hai");
+        speaker = speaker.replaceAll("Srishti", "joe dentist hai, par ap nay aaap ko doctor bowlti hai");
         speaker = speaker.replaceAll("Manisha", "cchhhhhhhhhhhooooottttttuuuuuuu");
 
 
         int intIndex = speaker.indexOf("Aunty");
-        if(intIndex == - 1) {
-            speech.speak(speaker, TextToSpeech.QUEUE_FLUSH, null);
-        } else {
+        if(speaker.indexOf("Aunty") != - 1) {
             MediaPlayer ring= MediaPlayer.create(MainActivity.this,R.raw.boloaunty);
-            ring.start();
+            ring.start();}
+            else if(speaker.indexOf("Hello") != - 1) {
+                MediaPlayer ring2= MediaPlayer.create(MainActivity.this,R.raw.chalbhosdike);
+                ring2.start();
+        } else {
+
+            speech.speak(speaker, TextToSpeech.QUEUE_FLUSH, null);
         }
 
 
