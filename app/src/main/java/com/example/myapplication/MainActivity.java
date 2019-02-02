@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -8,8 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
+import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int REQ_CODE_SPEECH_INPUT=1000;
-    TextView textView;
+    EditText textView;
     Button button;
     Button button2;
     TextToSpeech speech;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if (status!= TextToSpeech.ERROR){
-                    speech.setLanguage(Locale.CHINESE);
+                    speech.setLanguage(new Locale("en", "IN"));
 
                 }
             }
@@ -69,23 +69,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
-        switch(requestCode){
+        switch (requestCode) {
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
 
                     //get array from voice intent
-                    ArrayList <String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     //set to text view
                     textView.setText(result.get(0));
-                    speaker = result.get(0);
+
+
                 }
             }
         }
-
-
-
-
 
     }
 
@@ -98,21 +94,73 @@ public class MainActivity extends AppCompatActivity {
 
         try{ startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
 
-    }catch (Exception e) {
+        }catch (Exception e) {
 
         }
 
-        }
+    }
 
 
 
     private void spoke() {
 
-        speech.speak(speaker, TextToSpeech.QUEUE_FLUSH, null);
+
+        speaker= textView.getText().toString();
+        char ch[] = speaker.toCharArray();
+
+        for (int i = 0; i < speaker.length(); i++) {
+
+            // If first character of a word is found
+            if (i == 0 && ch[i] != ' ' ||
+                    ch[i] != ' ' && ch[i - 1] == ' ') {
+
+                // If it is in lower-case
+                if (ch[i] >= 'a' && ch[i] <= 'z') {
+
+                    // Convert into Upper-case
+                    ch[i] = (char)(ch[i] - 'a' + 'A');
+                }
+            }
+
+            // If apart from first character
+            // Any one is in Upper-case
+            else if (ch[i] >= 'A' && ch[i] <= 'Z')
+
+                // Convert into Lower-Case
+                ch[i] = (char)(ch[i] + 'a' - 'A');
+        }
+
+        // Convert the char array to equivalent String
+       speaker = new String(ch);
+
+
+
+
+
+        speaker = speaker.replaceAll("Shashwat", "Maadarchaood");
+        speaker = speaker.replaceAll("Shrey", "My inventor");
+        speaker = speaker.replaceAll("Hello", "fuck off");
+        speaker = speaker.replaceAll("Hi", "et tu brutus, fuck off");
+        speaker = speaker.replaceAll("College", "school");
+        speaker = speaker.replaceAll("Sex", "you are virgin");
+        speaker = speaker.replaceAll("Sing A Song", "which one . . . . . . aunty ya rinkiya");
+        speaker = speaker.replaceAll("Rinkiya", "hee hee hee hee hus daelae rinkiya k papa");
+        speaker = speaker.replaceAll("Srishti", "joe dentist hai par ap nay aaap ko doctor bowlti hai");
+        speaker = speaker.replaceAll("Manisha", "cchhhhhhhhhhhooooottttttuuuuuuu");
+
+
+        int intIndex = speaker.indexOf("Aunty");
+        if(intIndex == - 1) {
+            speech.speak(speaker, TextToSpeech.QUEUE_FLUSH, null);
+        } else {
+            MediaPlayer ring= MediaPlayer.create(MainActivity.this,R.raw.boloaunty);
+            ring.start();
+        }
+
 
 
     }
-    }
+}
 
 
 
